@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 def feed(request):
     # TODO: переписать
-    return HttpResponse("Временный feed")
+    return render(request, "base.html", context={"title": "Новости"})
