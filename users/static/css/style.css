@@ -736,4 +736,14 @@ footer ul li a:hover {
 footer ul li:last-child a {
   margin-bottom: 0;
 }
-/*# sourceMappingURL=style.css.map */
+
+/*----------------------------------------------------------------*/
+
+.tab-content {
+  display: none;
+}
+
+.non-auth-user {
+  background: transparent;
+  border: transparent;
+}

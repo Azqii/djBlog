@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static %}{% load users_tags %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -52,17 +52,21 @@
                         <li class="nav-item ">
                             <a class="nav-link text-white px-0" href="{% url 'logout' %}">Выйти</a>
                         </li>
-                    {% else %}
-                        <li class="nav-item ">
-                            <a class="nav-link text-white px-0 pt-0" href="{% url 'login' %}">Вход</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link text-white px-0" href="{% url 'register' %}">Регистрация</a>
-                        </li>
                     {% endif %}
                 </ul>
             </div>
             <!-- end of navbar -->
+
+            <div class="navbar navbar-dark my-4 p-0 font-primary">
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item ">
+                        <a class="nav-link text-white px-0 pt-0" href="#">О сайте</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-white px-0 pt-0" href="#">Обратная связь</a>
+                    </li>
+                </ul>
+            </div>
 
             <ul class="list-inline nml-2">
                 <li class="list-inline-item">
@@ -123,9 +127,11 @@
                 </div>
 
                 <div class="col-lg-4">
-
-                    {% block additional-widgets %}
-                    {% endblock %}
+                    {% if not user.is_authenticated %}
+                        {% show_forms %}
+                    {% else %}
+                        <h3>Logged as {{ user.username }}</h3>
+                    {% endif %}
 
                     <div class="widget bg-dark p-4 text-center">
                         <h2 class="widget-title text-white d-inline-block mt-4">Поиск</h2>

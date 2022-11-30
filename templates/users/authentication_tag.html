@@ -1,0 +1,58 @@
+{% load static %}
+
+<div class="widget bg-dark p-4 text-center">
+    <div class="tab btn-group-lg btn-group-toggle">
+        <button class="tab-links btn btn-outline-danger" id="defaultOpen" onclick="openWidget(event, 'Login')">Вход</button>
+        <button class="tab-links btn btn-outline-danger" onclick="openWidget(event, 'Register')">Регистрация</button>
+    </div>
+
+    <div class="tab-content" id="Login">
+        <h2 class="widget-title text-white d-inline-block mt-4">Вход</h2>
+
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div class="text-center">
+                    <img src="{% static 'users/img/profile-pic.png' %}"
+                         class="non-auth-user img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                         width="200px" alt="profile">
+                </div>
+
+                <p class="mt-4">{{ login_form.non_field_errors }}</p>
+
+                {% for f in login_form %}
+                    <div class="mb-3">{{ f }}</div>
+                    <p class="mt-4">{{ f.errors }}</p>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="tab-content" id="Register">
+        <h2 class="widget-title text-white d-inline-block mt-4">Регистрация</h2>
+
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div class="text-center">
+                    <img src="{% static 'users/img/profile-pic.png' %}"
+                         class="non-auth-user img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                         width="200px" alt="profile">
+                </div>
+
+                <p class="mt-4">{{ register_form.non_field_errors }}</p>
+
+                {% for f in register_form %}
+                    <div class="mb-3">{{ f }}</div>
+                    <p class="mt-4">{{ f.errors }}</p>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+</div>
