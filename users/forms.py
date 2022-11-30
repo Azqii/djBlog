@@ -7,9 +7,8 @@ from .models import User
 class UserRegisterForm(UserCreationForm):
     password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={"class": "form-control bg-transparent rounded-0 my-4", "placeholder": "Пароль"}))
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={"class": "form-control bg-transparent rounded-0 my-4", "placeholder": "Подтверждение пароля"}))
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={"class": "form-control bg-transparent rounded-0 my-4", "placeholder": "Подтверждение пароля"}))
 
     class Meta:
         model = User

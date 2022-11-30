@@ -2,28 +2,49 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from .forms import UserRegisterForm, UserLoginForm
 
 
+class UserAuthentication(TemplateView):
+    template_name = "users/authentication.html"
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("feed")  # TODO: переписать на страницу пользователя
+        return super(UserAuthentication, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserAuthentication, self).get_context_data(**kwargs)
+        context["title"] = "Аутентификация"
+        return context
+
+
 class UserRegister(CreateView):
     form_class = UserRegisterForm
-    template_name = "users/register.html"
+
+    def get(self, request, *args, **kwargs):
+        return redirect("authentication")
 
     def get_context_data(self, **kwargs):
         context = super(UserRegister, self).get_context_data(**kwargs)
-        context["title"] = "Регистрация"
+        context["register_form"] = context.get("form")
         return context
+
+    def get_success_url(self):
+        return reverse_lazy("authentication")
 
 
 class UserLogin(LoginView):
     form_class = UserLoginForm
-    template_name = "users/login.html"
+
+    def get(self, request, *args, **kwargs):
+        return redirect("authentication")
 
     def get_context_data(self, **kwargs):
         context = super(UserLogin, self).get_context_data()
-        context["title"] = "Авторизация"
+        context["login_form"] = context.get("form")
         return context
 
     def get_success_url(self):
@@ -32,4 +53,4 @@ class UserLogin(LoginView):
 
 def logout_user(request):
     logout(request)
-    return redirect("login")
+    return redirect("authentication")
