@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils import timezone
 
 from .managers import UserManager
@@ -60,7 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    # users = User.objects.all().select_related('Profile') TODO: удалить после использования
     """
     User's profile info model.
 
@@ -83,8 +83,7 @@ class Profile(models.Model):
         return str(self.user)
 
     def get_absolute_url(self):
-        # TODO: написать метод для absolute url профиля.
-        pass
+        return reverse("profile", kwargs={"profile_id": self.id})
 
 
 @receiver(post_save, sender=User)

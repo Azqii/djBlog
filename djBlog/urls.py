@@ -28,5 +28,10 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # debug toolbar
+    import debug_toolbar
+    urlpatterns = [path("__debug__", include(debug_toolbar.urls))] + urlpatterns
+
+    # media/static in debug
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

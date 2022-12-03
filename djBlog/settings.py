@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
+INTERNAL_IPS = ["127.0.0.1"]  # debug toolbar ips
+
 
 # Application definition
 
@@ -44,6 +46,8 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'comments.apps.CommentsConfig',
     'likes.apps.LikesConfig',
+
+    'debug_toolbar',  # debug toolbar
 ]
 
 MIDDLEWARE = [
@@ -54,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # debug toolbar
 ]
 
 ROOT_URLCONF = 'djBlog.urls'

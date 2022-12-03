@@ -592,7 +592,7 @@ ul, li {
   text-decoration: underline;
 }
 
-.categores-links a {
+#settings-button {
   font-size: 13px;
   color: #B0B0B0;
   border-color: #E4112F !important;
@@ -600,7 +600,8 @@ ul, li {
   margin-right: 6px;
   margin-top: 8px;
 }
-.categores-links a:hover {
+
+#settings-button:hover {
   color: #ffffff;
   background-color: #E4112F;
 }
@@ -746,4 +747,8 @@ footer ul li:last-child a {
 .non-auth-user {
   background: transparent;
   border: transparent;
+}
+
+div {
+  word-break: break-all;
 }

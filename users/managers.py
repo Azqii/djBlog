@@ -6,6 +6,9 @@ from django.contrib.auth.models import BaseUserManager
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
+    # def get(self, *args, **kwargs):
+    #     return super().select_related('profile').get(*args, **kwargs)
+
     def _create_user(self, email, username, password, **extra_fields):
         """
         Creates and saves a user with the given username, email and password.

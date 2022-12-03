@@ -27,11 +27,6 @@ class UserRegister(CreateView):
     def get(self, request, *args, **kwargs):
         return redirect("authentication")
 
-    def get_context_data(self, **kwargs):
-        context = super(UserRegister, self).get_context_data(**kwargs)
-        context["register_form"] = context.get("form")
-        return context
-
     def get_success_url(self):
         return reverse_lazy("authentication")
 
@@ -41,11 +36,6 @@ class UserLogin(LoginView):
 
     def get(self, request, *args, **kwargs):
         return redirect("authentication")
-
-    def get_context_data(self, **kwargs):
-        context = super(UserLogin, self).get_context_data()
-        context["login_form"] = context.get("form")
-        return context
 
     def get_success_url(self):
         return reverse_lazy("feed")
