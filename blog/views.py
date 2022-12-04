@@ -1,6 +1,6 @@
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
-
 from users.models import Profile
 from posts.models import Post
 
@@ -19,6 +19,8 @@ class ProfileView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
-        context["posts"] = Post.objects.filter(author_id=context["profile"].id).select_related("author__profile")
+        page = self.request.GET.get("page")
+        posts = Post.objects.filter(author_id=context["profile"].id).select_related("author__profile")
+        context["posts"] = Paginator(posts, 6).get_page(page)
         context["title"] = context["profile"].user.username
         return context

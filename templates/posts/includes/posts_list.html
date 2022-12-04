@@ -1,0 +1,62 @@
+{% load static %}
+
+{% for post in posts %}
+    <div class="card post-item bg-transparent border-0 mb-5">
+        <div class="card-body px-0">
+            <div class="d-flex">
+                <div class="mr-3">
+                    <img class="rounded-circle d-block" width="70px"
+                            {% if post.author.profile.photo %} src="{{ post.author.profile.photo.url }}"
+                            {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+                </div>
+                <div class="mt-1">
+                    <h3 class="text-white">
+                        <a class="text-white opacity-50-onHover"
+                           href="{{ post.author.profile.get_absolute_url }}">{{ post.author.username }}</a>
+                    </h3>
+                    <ul class="post-meta mt-1">
+                        <li class="d-inline-block mr-3">
+                            <span class="fas fa-clock text-primary"></span>
+                            <a class="ml-1" href="#">{{ post.time_created }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if post.image %}
+                <img class="card-img-bottom mt-4" src="{{ post.image.url }}" alt>
+            {% endif %}
+
+            <p class="card-text my-4">{{ post.content }}</p>
+
+            <div class="d-flex justify-content-between">
+                <a href="#" class="btn btn-primary">Комментарии <img src="{% static 'img/arrow-right.png' %}"
+                                                                     alt=""></a>
+                <a href="#" class="btn btn-primary">Лайк (переделать)</a>
+            </div>
+
+
+        </div>
+    </div>
+{% endfor %}
+
+{% if posts.has_other_pages %}
+    <nav class="pagination-outer mb-5" aria-label="Page navigation">
+        <ul class="pagination">
+            {% if posts.has_previous %}
+                <li class="page-item">
+                    <a href="?page=1" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for page in posts.paginator.page_range %}
+                {% if posts.number == page %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% elif page >= posts.number|add:-2 and page <= posts.number|add:2 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}

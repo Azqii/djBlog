@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'comments.apps.CommentsConfig',
     'likes.apps.LikesConfig',
+    'blog.apps.BlogConfig',
 
     'debug_toolbar',  # debug toolbar
 ]
