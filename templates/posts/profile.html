@@ -11,7 +11,13 @@
             </div>
             <div class="mt-3">
                 {% if request.user.id == profile.user_id %}
-                    <a class="border" id="settings-button" href="{% url 'settings' %}">Настройки</a>
+                    <a class="border profile-header-button" href="{% url 'settings' %}">Настройки</a>
+                {% elif already_following %}
+                    <a class="border profile-header-button-active"
+                       href="{% url 'unfollow' unfollow_id=profile.user.id %}">Отписаться</a>
+                {% else %}
+                    <a class="border profile-header-button"
+                       href="{% url 'follow' follow_to_id=profile.user.id %}">Подписаться</a>
                 {% endif %}
 
                 <h1 class="text-white">{{ profile.user.username }}</h1>

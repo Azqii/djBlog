@@ -11,12 +11,9 @@ class Follow(models.Model):
     time_created = models.DateTimeField(verbose_name="Время создания", auto_now_add=True)
 
     class Meta:
+        unique_together = ("following", "follower", )
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
 
     def __str__(self):
         return f"follow id: {self.id} | {self.follower_id} follows {self.following_id}"
-
-    def get_absolute_url(self):
-        # TODO: Написать метод для absolute url подписок, если он нужен
-        pass
