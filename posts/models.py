@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -20,5 +21,4 @@ class Post(models.Model):
         return f"post id: {self.id}"
 
     def get_absolute_url(self):
-        # TODO: Написать метод для absolute url поста
-        pass
+        return reverse("post", kwargs={"post_id": self.id})

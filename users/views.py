@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -23,7 +24,7 @@ class UserAuthentication(TemplateView):
 
 class UserRegister(CreateView):
     form_class = UserRegisterForm
-
+    template_name = None
 
     def get(self, request, *args, **kwargs):
         return redirect("authentication")
@@ -34,6 +35,7 @@ class UserRegister(CreateView):
 
 class UserLogin(LoginView):
     form_class = UserLoginForm
+    template_name = None
 
     def get(self, request, *args, **kwargs):
         return redirect("authentication")
@@ -47,15 +49,15 @@ def logout_user(request):
     return redirect("authentication")
 
 
-class ProfileSettings(FormView):
+class ProfileSettings(LoginRequiredMixin, FormView):
+    login_url = "authentication"
     template_name = "users/profile_settings.html"
     form_class = ProfileSettingsForm
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Настройки"
         return context
-
 
     def get_initial(self):
         initial = super().get_initial()
@@ -81,4 +83,3 @@ class ProfileSettings(FormView):
         user.save()
 
         return redirect("profile", user.profile.id)
-

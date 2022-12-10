@@ -1,43 +1,73 @@
-from django.core.paginator import Paginator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
+from .forms import PostForm
 from .models import Post
-from users.models import Profile
-from follows.models import Follow
 
 
-class ProfilePosts(DetailView):
-    queryset = Profile.objects.select_related("user")
-    template_name = "posts/profile.html"
-    pk_url_kwarg = "profile_id"
-    context_object_name = "profile"
+class PostView(DetailView):
+    queryset = Post.objects.select_related("author__profile")
+    template_name = "posts/post.html"
+    pk_url_kwarg = "post_id"
+    context_object_name = "post"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ProfilePosts, self).get_context_data(**kwargs)
-        page = self.request.GET.get("page")
-        posts = Post.objects.filter(author_id=self.object.user.id).select_related("author__profile")
-        context["posts"] = Paginator(posts, 6).get_page(page)
-        context["already_following"] = self.object.user.followers.filter(follower=self.request.user).exists()
-        context["title"] = context["profile"].user.username
-        return context
-
-
-class Feed(ListView):
-    model = Post
-    template_name = "posts/feed.html"
-    context_object_name = "posts"
-
-    def get_queryset(self):
-        sub_qs = Follow.objects.filter(follower=self.request.user.id).values_list("following_id", flat=True)
-        return Post.objects.filter(author_id__in=sub_qs).select_related("author__profile")
-
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Новости"
+        context["title"] = f"Пост от {self.object.time_created.date()} | Автор: {self.object.author.username}"
         return context
 
 
-def feed(request):
-    # TODO: переписать
-    return render(request, "base.html", context={"title": "Новости"})
+class AddPost(LoginRequiredMixin, CreateView):
+    login_url = "authentication"
+    form_class = PostForm
+    template_name = "posts/post_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Новый пост"
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class EditPost(UpdateView):
+    model = Post
+    form_class = PostForm
+    pk_url_kwarg = "post_id"
+    template_name = "posts/post_form.html"
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        if obj.author_id != self.request.user.id:
+            raise PermissionDenied()
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Редактировать пост"
+        return context
+
+
+class DeletePost(DeleteView):
+    model = Post
+    pk_url_kwarg = "post_id"
+    template_name = "posts/post_confirm_delete.html"
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        if obj.author_id != self.request.user.id:
+            raise PermissionDenied()
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Удалить пост"
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("profile", kwargs={"profile_id": self.request.user.profile.id})

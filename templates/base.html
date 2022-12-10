@@ -43,6 +43,9 @@
                         <li class="nav-item ">
                             <a class="nav-link text-white px-0 pt-0" href="{{ request.user.profile.get_absolute_url }}">Профиль</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white px-0" href="{% url 'add_post' %}">Новый пост</a>
+                        </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white px-0" href="{% url 'feed' %}">Новостная лента</a>
                         </li>
@@ -117,7 +120,7 @@
         <div class="nav-toggle-overlay"></div>
         <!-- end of mobile-nav -->
 
-        <div class="container pt-4 mt-5">
+        <div class="container py-4 my-5">
             <div class="row justify-content-between">
                 <div class="col-lg-7">
 

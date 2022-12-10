@@ -40,20 +40,20 @@ class ProfileSettingsForm(forms.Form):
 
     first_name = forms.CharField(required=False, label="Имя", max_length=150, widget=forms.TextInput(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: Иван"}))
+               "placeholder": "Иван"}))
     last_name = forms.CharField(required=False, label="Фамилия", max_length=150, widget=forms.TextInput(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: Иванов"}))
+               "placeholder": "Иванов"}))
 
     vk = forms.CharField(required=False, label="Вконтакте", max_length=100, widget=forms.TextInput(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: id1"}))
+               "placeholder": "Ваш id в vk"}))
     tg = forms.CharField(required=False, label="Телеграм", max_length=100, widget=forms.TextInput(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: nickname"}))
+               "placeholder": "Ваш никнейм в telegram"}))
     instagram = forms.CharField(required=False, label="Инстаграм", max_length=100, widget=forms.TextInput(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: nickname"}))
+               "placeholder": "Ваш никнейм в instagram"}))
     bio = forms.CharField(required=False, label="О себе", widget=forms.Textarea(
         attrs={"class": "form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0",
-               "placeholder": "Например: 22 года, бэкенд-разработчик из Москвы"}))
+               "placeholder": "Информация о себе"}))

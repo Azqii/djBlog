@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="contact-form bg-dark mb-5">
-        <h1 class="text-white add-letter-space mb-5">Настройки профиля</h1>
+        <h1 class="text-white add-letter-space mb-5">{{ title}}</h1>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

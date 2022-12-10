@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if post.image %}
+        <img class="img-fluid" src="{{ post.image.url }}" alt>
+    {% endif %}
+    <div class="d-flex justify-content-between">
+        <div class="d-flex mt-4">
+            <div class="mr-3">
+                <img class="rounded-circle d-block" width="90px"
+                        {% if post.author.profile.photo %} src="{{ post.author.profile.photo.url }}"
+                        {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+            </div>
+            <div class="mt-2">
+                <h1 class="text-white add-letter-space">{{ post.author.username }}</h1>
+            </div>
+        </div>
+
+        {% if request.user.id == post.author.id %}
+            <ul class="list-inline-item mt-4">
+                <li class="list-inline-item">
+                    <a href="{% url 'edit_post' post_id=post.id %}" class="text-white text-red-onHover pr-2">
+                        <span class="fas fa-pen"></span>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{% url 'delete_post' post_id=post.id %}" class="text-white text-red-onHover pr-2">
+                        <span class="fas fa-trash"></span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+
+    <ul class="post-meta mt-3 mb-4">
+        <li class="d-inline-block mr-3">
+            <span class="fas fa-clock text-primary"></span>
+            <a class="ml-1" href="#">{{ post.time_created }}</a>
+        </li>
+    </ul>
+
+    <p>{{ post.content }}</p>
+{% endblock %}
