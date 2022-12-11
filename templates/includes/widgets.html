@@ -1,0 +1,25 @@
+{% load static %}{% load users_tags %}
+
+{% if not request.user.is_authenticated %}
+    {% show_forms %}
+{% else %}
+    <div class="widget text-center">
+        <img class="author-thumb-sm rounded-circle d-block mx-auto"
+                {% if request.user.profile.photo %} src="{{ request.user.profile.photo.url }}"
+                {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+        <h2 class="widget-title text-white d-inline-block mt-4">Logged
+            as {{ request.user.username }}</h2>
+    </div>
+{% endif %}
+
+<div class="widget bg-dark p-4 text-center">
+    <h2 class="widget-title text-white d-inline-block mt-4">Поиск</h2>
+    <form action="#">
+        <div class="form-group">
+            <input type="text" class="form-control bg-transparent rounded-0 my-4"
+                   placeholder="Имя пользователя">
+            <button class="btn btn-primary">Найти<img
+                    src="{% static 'img/arrow-right.png' %}" alt=""></button>
+        </div>
+    </form>
+</div>

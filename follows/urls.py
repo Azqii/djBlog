@@ -1,8 +1,8 @@
-from django.urls import re_path
+from django.urls import path
 
 from .views import FollowView, UnfollowView
 
 urlpatterns = [
-    re_path(r"^profile/id(?P<follow_to_id>\d+)/follow/$", FollowView.as_view(), name="follow"),
-    re_path(r"^profile/id(?P<unfollow_id>\d+)/unfollow/$", UnfollowView.as_view(), name="unfollow"),
+    path("follow/", FollowView.as_view(), name="follow"),
+    path("unfollow/", UnfollowView.as_view(), name="unfollow"),
 ]

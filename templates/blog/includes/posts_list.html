@@ -1,0 +1,58 @@
+{% load static %}
+
+{% for post in object_list %}
+    <div class="card post-item bg-transparent border-0 mb-5">
+        <div class="card-body px-0">
+            <div class="d-flex">
+                <img class="rounded-circle d-block" width="70px"
+                        {% if post.author.profile.photo %} src="{{ post.author.profile.photo.url }}"
+                        {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="text-white">
+                            <a class="text-white opacity-50-onHover"
+                               href="{{ post.author.profile.get_absolute_url }}">{{ post.author.username }}</a>
+                        </h3>
+
+                        {% if request.user.id == post.author.id %}
+                            <ul class="list-inline-item">
+                                <li class="list-inline-item">
+                                    <a href="{% url 'edit_post' post_id=post.id %}"
+                                       class="text-white text-red-onHover pr-2">
+                                        <span class="fas fa-pen"></span>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'delete_post' post_id=post.id %}"
+                                       class="text-white text-red-onHover pr-2">
+                                        <span class="fas fa-trash"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <ul class="post-meta mt-1">
+                        <li class="d-inline-block mr-3">
+                            <span class="fas fa-clock text-primary"></span>
+                            <a class="ml-1" href="#">{{ post.time_created }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if post.image %}
+                <img class="card-img-bottom mt-4" src="{{ post.image.url }}" alt>
+            {% endif %}
+
+            <p class="card-text my-4">{{ post.content }}</p>
+
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Перейти к посту<img
+                    src="{% static 'img/arrow-right.png' %}" alt=""></a>
+
+
+        </div>
+    </div>
+{% endfor %}
+
+{% include 'includes/pagination.html' %}

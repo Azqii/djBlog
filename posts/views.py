@@ -2,22 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from .forms import PostForm
 from .models import Post
-
-
-class PostView(DetailView):
-    queryset = Post.objects.select_related("author__profile")
-    template_name = "posts/post.html"
-    pk_url_kwarg = "post_id"
-    context_object_name = "post"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = f"Пост от {self.object.time_created.date()} | Автор: {self.object.author.username}"
-        return context
 
 
 class AddPost(LoginRequiredMixin, CreateView):
