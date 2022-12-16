@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Exists, OuterRef, Count
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin, DetailView
@@ -6,6 +7,7 @@ from django.views.generic.detail import SingleObjectMixin, DetailView
 from posts.models import Post
 from users.models import Profile
 from follows.models import Follow
+from likes.models import Like
 
 
 def index(request):
@@ -15,7 +17,6 @@ def index(request):
 
 
 class PostView(DetailView):
-    queryset = Post.objects.select_related("author__profile")
     template_name = "posts/post.html"
     pk_url_kwarg = "post_id"
     context_object_name = "post"
@@ -24,6 +25,10 @@ class PostView(DetailView):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Пост от {self.object.time_created.date()} | Автор: {self.object.author.username}"
         return context
+
+    def get_queryset(self):
+        sub_qs = Exists(Like.objects.filter(post_id=OuterRef("pk"), user_id=self.request.user.id))
+        return Post.objects.select_related("author__profile").annotate(already_liked=sub_qs, likes_count=Count("likes"))
 
 
 class FeedPosts(LoginRequiredMixin, ListView):
@@ -48,8 +53,9 @@ class ProfilePosts(SingleObjectMixin, ListView):
     paginate_by = 6
 
     def get(self, request, *args, **kwargs):
+        sub_qs = Exists(Follow.objects.filter(following_id=OuterRef("pk"), follower_id=self.request.user.id))
         self.object = self.get_object(
-            queryset=Profile.objects.select_related("user").prefetch_related("user__followers", "user__follows"))
+            queryset=Profile.objects.select_related("user").annotate(already_following=sub_qs))
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -58,8 +64,6 @@ class ProfilePosts(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = self.object.user.username
-        if self.object.user.id != self.request.user.id:
-            context["already_following"] = self.object.user.followers.filter(follower=self.request.user).exists()
         return context
 
 

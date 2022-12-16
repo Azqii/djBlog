@@ -12,12 +12,9 @@ class Like(models.Model):
     time_created = models.DateTimeField(verbose_name="Время создания", auto_now_add=True)
 
     class Meta:
+        unique_together = ("post", "user", )
         verbose_name = "Лайк"
         verbose_name_plural = "Лайки"
 
     def __str__(self):
         return f"post like id: {self.id}"
-
-    def get_absolute_url(self):
-        # TODO: Написать метод для absolute url лайка постов, если он нужен
-        pass

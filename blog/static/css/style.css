@@ -1,10 +1,3 @@
-/**
- * WEBSITE: https://themefisher.com
- * TWITTER: https://twitter.com/themefisher
- * FACEBOOK: https://www.facebook.com/themefisher
- * GITHUB: https://github.com/themefisher/
- */
-
 @charset "UTF-8";
 /*!------------------------------------------------------------------
 [MAIN STYLESHEET]
@@ -68,8 +61,7 @@ body.loaded {
     letter-spacing: 0.1em;
     color: #ffffff;
     font-family: "Barlow Condensed", sans-serif;
-    border-radius: 0;
-    border: 0;
+
 }
 
 .btn img {
@@ -92,6 +84,11 @@ body.loaded {
 
 .btn-primary {
     background-color: #E4112F;
+    border-color: #E4112F;
+}
+
+.btn-primary:hover {
+    border-color: #E4112F;
 }
 
 .btn-sm:hover {
@@ -910,4 +907,8 @@ p {
         border-radius: 20px;
         transform: skew(0) scale(1);
     }
+}
+
+.like-button {
+    font-size: x-large;
 }

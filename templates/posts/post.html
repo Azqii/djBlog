@@ -13,7 +13,8 @@
                         {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
             </div>
             <div class="mt-2">
-                <h1 class="text-white add-letter-space">{{ post.author.username }}</h1>
+                <a href="{% url 'profile' profile_id=post.author.profile.id %}" class="text-white opacity-50-onHover">
+                    <h1 class="add-letter-space">{{ post.author.username }}</h1></a>
             </div>
         </div>
 
@@ -40,5 +41,9 @@
         </li>
     </ul>
 
-    <p>{{ post.content }}</p>
+    <p class="mb-4">{{ post.content }}</p>
+
+    <div class="d-flex container-fluid justify-content-end mb-4">
+        {% include "likes/includes/like_button.html" %}
+    </div>
 {% endblock %}

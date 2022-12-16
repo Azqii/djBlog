@@ -13,18 +13,8 @@
             <div class="mt-2">
                 {% if request.user.id == profile.user_id %}
                     <a class="btn-sm btn-primary p-2" href="{% url 'settings' %}">Настройки</a>
-                {% elif already_following %}
-                    <form method="post" action="{% url 'unfollow' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="id_to_unfollow" value="{{ profile.user.id }}" readonly>
-                        <button type="submit" class="btn-sm btn-outline-danger active">Отписаться</button>
-                    </form>
                 {% else %}
-                    <form method="post" action="{% url 'follow' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="id_to_follow" value="{{ profile.user.id }}" readonly>
-                        <button type="submit" class="btn-sm btn-outline-danger text-gray">Подписаться</button>
-                    </form>
+                    {% include 'follows/includes/follow_button.html' %}
                 {% endif %}
 
                 <h1 class="text-white">{{ profile.user.username }}</h1>
@@ -65,11 +55,11 @@
         <div class="d-flex justify-content-end container-fluid">
             <p><b>
                 <a href="{% url 'follows' profile_id=profile.id %}"
-                   class="text-white opacity-50-onHover mr-3">Подписки: {{ profile.user.follows.all.count }}</a>
+                   class="text-white opacity-50-onHover mr-3">Подписки: {{ profile.user.follows.count }}</a>
             </b></p>
             <p><b>
                 <a href="{% url 'followers' profile_id=profile.id %}"
-                   class="text-white opacity-50-onHover">Подписчики: {{ profile.user.followers.all.count }}</a>
+                   class="text-white opacity-50-onHover">Подписчики: {{ profile.user.followers.count }}</a>
             </b></p>
         </div>
     </div>

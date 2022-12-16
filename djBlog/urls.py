@@ -26,6 +26,7 @@ urlpatterns = [
     path("", include("users.urls")),
     path("", include("posts.urls")),
     path("", include("follows.urls")),
+    path("", include("likes.urls")),
 ]
 
 if settings.DEBUG:
