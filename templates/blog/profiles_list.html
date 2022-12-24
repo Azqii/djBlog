@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load static %}
+
+{% block content %}
+    <h2 class="text-white add-letter-space mb-3">Пользователи:</h2>
+
+    {% for profile in object_list %}
+        <div class="bg-dark p-2 mb-4">
+            <div class="d-flex">
+                <img class="rounded-circle d-block" width="120px"
+                        {% if profile.photo %} src="{{ profile.photo.url }}"
+                        {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+
+                <div class="mt-1 container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="text-white">
+                            <a class="text-white opacity-50-onHover"
+                               href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a>
+                        </h2>
+                    </div>
+
+                    {% if profile.user.first_name and profile.user.last_name %}
+                        <h3>{{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% include 'includes/pagination.html' %}
+{% endblock %}

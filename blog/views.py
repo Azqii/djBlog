@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Exists, OuterRef, Count
+from django.db.models import Exists, OuterRef, Count, Q, Value
+from django.db.models.functions import Concat
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin, DetailView
@@ -101,4 +102,21 @@ class ProfileFollowersView(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Подписчики {self.object.user.username}"
+        return context
+
+
+class UsersSearchView(ListView):
+    template_name = "blog/profiles_list.html"
+    paginate_by = 8
+
+    def get_queryset(self):
+        search_query = self.request.GET.get("name", "")
+
+        return Profile.objects.select_related("user").annotate(
+            full_name=Concat("user__first_name", Value(" "), "user__last_name")).filter(
+            Q(user__username__icontains=search_query) | Q(full_name__icontains=search_query))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Поиск"
         return context

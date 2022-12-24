@@ -14,11 +14,11 @@
 
 <div class="widget bg-dark p-4 text-center">
     <h2 class="widget-title text-white d-inline-block mt-4">Поиск</h2>
-    <form action="#">
+    <form method="get" action="{% url 'user_search' %}">
         <div class="form-group">
             <input type="text" class="form-control bg-transparent rounded-0 my-4"
-                   placeholder="Имя пользователя">
-            <button class="btn btn-primary">Найти<img
+                   placeholder="Имя пользователя" name="name">
+            <button type="submit" class="btn btn-primary">Найти<img
                     src="{% static 'img/arrow-right.png' %}" alt=""></button>
         </div>
     </form>
