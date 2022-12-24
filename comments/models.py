@@ -17,10 +17,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
+        ordering = ("-time_created",)
 
     def __str__(self):
         return f"comment id: {self.id}"
-
-    def get_absolute_url(self):
-        # TODO: Написать метод для absolute url комментария, если он нужен
-        pass

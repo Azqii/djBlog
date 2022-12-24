@@ -17,7 +17,7 @@ def index(request):
 
 
 class PostView(DetailView):
-    template_name = "posts/post.html"
+    template_name = "blog/post.html"
     pk_url_kwarg = "post_id"
     context_object_name = "post"
 
@@ -28,7 +28,8 @@ class PostView(DetailView):
 
     def get_queryset(self):
         sub_qs = Exists(Like.objects.filter(post_id=OuterRef("pk"), user_id=self.request.user.id))
-        return Post.objects.select_related("author__profile").annotate(already_liked=sub_qs, likes_count=Count("likes"))
+        return Post.objects.select_related("author__profile").prefetch_related("comments__user__profile").annotate(
+            already_liked=sub_qs, likes_count=Count("likes"))
 
 
 class FeedPosts(LoginRequiredMixin, ListView):

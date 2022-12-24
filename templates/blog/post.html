@@ -2,9 +2,6 @@
 {% load static %}
 
 {% block content %}
-    {% if post.image %}
-        <img class="img-fluid" src="{{ post.image.url }}" alt>
-    {% endif %}
     <div class="d-flex justify-content-between">
         <div class="d-flex mt-4">
             <div class="mr-3">
@@ -41,9 +38,18 @@
         </li>
     </ul>
 
+    {% if post.image %}
+        <img class="img-fluid mb-4" src="{{ post.image.url }}" alt>
+    {% endif %}
+
     <p class="mb-4">{{ post.content }}</p>
 
-    <div class="d-flex container-fluid justify-content-end mb-4">
+    <div class="d-flex container-fluid justify-content-between mb-4 p-0">
+        <a class="btn btn-primary" href="{% url 'add_comment' post_id=post.id %}">
+            <i class="fa fa-comment like-button"> </i>
+        </a>
         {% include "likes/includes/like_button.html" %}
     </div>
+
+    {% include 'blog/includes/comments_list.html' %}
 {% endblock %}

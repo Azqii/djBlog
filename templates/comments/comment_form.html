@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="contact-form bg-dark mb-5">
+        <form method="post">
+            {% csrf_token %}
+
+            <p>{{ form.non_field_errors }}</p>
+
+            {% for f in form %}
+                <div class="form-group mb-3">
+                    <label for="{{ f.id_for_label }}" class="text-black-300">{{ f.label }}</label>
+                    {{ f }}
+                    <p>{{ f.errors }}</p>
+                </div>
+            {% endfor %}
+
+            <button class="btn btn-sm btn-primary" type="submit">Комментировать</button>
+        </form>
+    </div>
+{% endblock %}

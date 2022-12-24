@@ -1,0 +1,49 @@
+{% load static %}
+
+<h2 class="text-white add-letter-space mb-3">Комментарии:</h2>
+
+{% for comment in post.comments.all %}
+    <div class="card post-item bg-transparent border-0">
+        <div class="card-body px-0">
+            <div class="d-flex">
+                <img class="rounded-circle d-block" width="70px"
+                        {% if comment.user.profile.photo %} src="{{ comment.user.profile.photo.url }}"
+                        {% else %} src="{% static 'users/img/profile-pic.png' %}" {% endif %} alt>
+
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="text-white">
+                            <a class="text-white opacity-50-onHover"
+                               href="{{ comment.user.profile.get_absolute_url }}">{{ comment.user.username }}</a>
+                        </h3>
+
+                        {% if request.user.id == comment.user.id %}
+                            <ul class="list-inline-item">
+                                <li class="list-inline-item">
+                                    <a href="{% url 'edit_comment' post_id=post.id comment_id=comment.id %}"
+                                       class="text-white text-red-onHover pr-2">
+                                        <span class="fas fa-pen"></span>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'delete_comment' post_id=post.id comment_id=comment.id %}"
+                                       class="text-white text-red-onHover pr-2">
+                                        <span class="fas fa-trash"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <ul class="post-meta mt-1">
+                        <li class="d-inline-block mr-3">
+                            <span class="fas fa-clock text-primary"></span>
+                            <a class="ml-1" href="#">{{ comment.time_created }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="card-text my-4">{{ comment.content }}</p>
+        </div>
+    </div>
+{% endfor %}
