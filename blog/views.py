@@ -54,9 +54,8 @@ class ProfilePostsView(SingleObjectMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         sub_qs = Exists(Follow.objects.filter(following_id=OuterRef("pk"), follower_id=self.request.user.id))
-        self.object = self.get_object(queryset=Profile.objects.select_related(
-            "user").annotate(
-            already_following=sub_qs)
+        self.object = self.get_object(
+            queryset=Profile.objects.select_related("user").annotate(already_following=sub_qs)
         )
         return super().get(request, *args, **kwargs)
 
