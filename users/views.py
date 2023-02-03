@@ -1,44 +1,33 @@
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, FormView
 
-from .forms import UserRegisterForm, UserLoginForm, ProfileSettingsForm
+from .forms import UserRegisterForm, ProfileSettingsForm, UserLoginForm
+from .utils import AuthenticationMixin
 
 
-class UserAuthentication(TemplateView):
+class UserAuthenticationView(TemplateView):
     template_name = "users/authentication.html"
+    extra_context = {"title": "Аутентификация"}
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect("profile", self.request.user.profile.id)
-        return super(UserAuthentication, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(UserAuthentication, self).get_context_data(**kwargs)
-        context["title"] = "Аутентификация"
-        return context
+        return super().get(request, *args, **kwargs)
 
 
-class UserRegister(CreateView):
+class UserRegisterView(AuthenticationMixin, CreateView):
     form_class = UserRegisterForm
-    template_name = None
-
-    def get(self, request, *args, **kwargs):
-        return redirect("authentication")
 
     def get_success_url(self):
-        return reverse_lazy("authentication")  # TODO: переделать на вход
+        return reverse_lazy("authentication")
 
 
-class UserLogin(LoginView):
+class UserLoginView(AuthenticationMixin, LoginView):
     form_class = UserLoginForm
-    template_name = None
-
-    def get(self, request, *args, **kwargs):
-        return redirect("authentication")
 
     def get_success_url(self):
         return reverse_lazy("feed")
@@ -49,24 +38,21 @@ def logout_user(request):
     return redirect("authentication")
 
 
-class ProfileSettings(LoginRequiredMixin, FormView):
-    login_url = "authentication"
+class ProfileSettingsView(LoginRequiredMixin, FormView):
     template_name = "users/profile_settings.html"
     form_class = ProfileSettingsForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Настройки"
-        return context
+    extra_context = {"title": "Настройки"}
 
     def get_initial(self):
         initial = super().get_initial()
         user = self.request.user
 
-        initial.update({"first_name": user.first_name, "last_name": user.last_name,
-                        "vk": user.profile.vk, "tg": user.profile.tg,
-                        "instagram": user.profile.instagram, "bio": user.profile.bio,
-                        "photo": user.profile.photo})
+        initial.update({
+            "first_name": user.first_name, "last_name": user.last_name,
+            "vk": user.profile.vk, "tg": user.profile.tg,
+            "instagram": user.profile.instagram, "bio": user.profile.bio,
+            "photo": user.profile.photo
+        })
         return initial
 
     def form_valid(self, form):

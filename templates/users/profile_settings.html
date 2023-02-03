@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
     <div class="contact-form bg-dark mb-5">
@@ -9,13 +10,47 @@
 
             <p>{{ form.non_field_errors }}</p>
 
-            {% for f in form %}
-                <div class="form-group mb-3">
-                    <label for="{{ f.id_for_label }}" class="text-black-300">{{ f.label }}</label>
-                    {{ f }}
-                    <p>{{ f.errors }}</p>
-                </div>
-            {% endfor %}
+            <div class="form-group mb-3">
+                <label for="{{ form.photo.id_for_label }}" class="text-black-300">Фото</label>
+                {% render_field form.photo class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" %}
+                <p>{{ form.photo.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.first_name.id_for_label }}" class="text-black-300">Имя</label>
+                {% render_field form.first_name class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Например: Иван" %}
+                <p>{{ form.first_name.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.last_name.id_for_label }}" class="text-black-300">Фамилия</label>
+                {% render_field form.last_name class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Например: Иванов" %}
+                <p>{{ form.last_name.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.vk.id_for_label }}" class="text-black-300">Вконтакте</label>
+                {% render_field form.vk class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Ваш id в вк" %}
+                <p>{{ form.vk.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.tg.id_for_label }}" class="text-black-300">Telegram</label>
+                {% render_field form.tg class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Ваш никнейм в telegram" %}
+                <p>{{ form.tg.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.instagram.id_for_label }}" class="text-black-300">Instagram</label>
+                {% render_field form.instagram class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Ваш никнейм в instagram" %}
+                <p>{{ form.instagram.errors }}</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="{{ form.bio.id_for_label }}" class="text-black-300">О Себе</label>
+                {% render_field form.bio class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Информация о себе" %}
+                <p>{{ form.bio.errors }}</p>
+            </div>
 
             <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
         </form>

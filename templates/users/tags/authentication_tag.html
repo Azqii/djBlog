@@ -1,8 +1,10 @@
 {% load static %}
+{% load widget_tweaks %}
 
 <div class="widget bg-dark p-4 text-center">
     <div class="tab btn-group-lg btn-group-toggle">
-        <button class="tab-links btn btn-outline-danger" id="defaultOpen" onclick="openWidget(event, 'Login')">Вход</button>
+        <button class="tab-links btn btn-outline-danger" id="defaultOpen" onclick="openWidget(event, 'Login')">Вход
+        </button>
         <button class="tab-links btn btn-outline-danger" onclick="openWidget(event, 'Register')">Регистрация</button>
     </div>
 
@@ -21,10 +23,15 @@
 
                 <p>{{ login_form.non_field_errors }}</p>
 
-                {% for f in login_form %}
-                    <div class="mb-3">{{ f }}</div>
-                    <p>{{ f.errors }}</p>
-                {% endfor %}
+                <div class="mb-3">
+                    {% render_field login_form.username class="form-control bg-transparent rounded-0 my-4" placeholder="Email" %}
+                    <p>{{ login_form.username.errors }}</p>
+                </div>
+
+                <div class="mb-3">
+                    {% render_field login_form.password class="form-control bg-transparent rounded-0 my-4" placeholder="Пароль" %}
+                    <p>{{ login_form.password.errors }}</p>
+                </div>
 
                 <button type="submit" class="btn btn-primary">Войти</button>
             </div>
@@ -46,10 +53,25 @@
 
                 <p>{{ register_form.non_field_errors }}</p>
 
-                {% for f in register_form %}
-                    <div class="mb-3">{{ f }}</div>
-                    <p>{{ f.errors }}</p>
-                {% endfor %}
+                <div class="mb-3">
+                    {% render_field register_form.email class="form-control bg-transparent rounded-0 my-4" placeholder="Email" %}
+                    <p>{{ register_form.email.errors }}</p>
+                </div>
+
+                <div class="mb-3">
+                    {% render_field register_form.username class="form-control bg-transparent rounded-0 my-4" placeholder="Имя пользователя" %}
+                    <p>{{ register_form.username.errors }}</p>
+                </div>
+
+                <div class="mb-3">
+                    {% render_field register_form.password1 class="form-control bg-transparent rounded-0 my-4" placeholder="Пароль" %}
+                    <p>{{ register_form.password1.errors }}</p>
+                </div>
+
+                <div class="mb-3">
+                    {% render_field register_form.password2 class="form-control bg-transparent rounded-0 my-4" placeholder="Подтверждение пароля" %}
+                    <p>{{ register_form.password2.errors }}</p>
+                </div>
 
                 <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
             </div>

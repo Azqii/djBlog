@@ -1,14 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import View
 
 from .models import Follow
 
 
 class FollowView(LoginRequiredMixin, View):
-    login_url = "authentication"
-
     def post(self, request, *args, **kwargs):
         id_to_follow = request.POST.get("id_to_follow")
 
@@ -24,8 +22,6 @@ class FollowView(LoginRequiredMixin, View):
 
 
 class UnfollowView(LoginRequiredMixin, View):
-    login_url = "authentication"
-
     def post(self, request, *args, **kwargs):
         id_to_unfollow = request.POST.get("id_to_unfollow")
 
@@ -34,4 +30,4 @@ class UnfollowView(LoginRequiredMixin, View):
 
         Follow.objects.filter(following_id=id_to_unfollow, follower_id=self.request.user.id).delete()
 
-        return redirect("profile", id_to_unfollow) # TODO: переписать с AJAX
+        return redirect("profile", id_to_unfollow)  # TODO: переписать с AJAX

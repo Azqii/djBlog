@@ -19,12 +19,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     username_validator = UnicodeUsernameValidator()
 
-    email = models.EmailField(verbose_name="Адрес эл. почты", unique=True,
-                              error_messages={"unique": "Пользователь с такой эл. почтой уже существует"}, )
-    username = models.CharField(verbose_name="Имя пользователя", unique=True, max_length=50,
-                                validators=[username_validator],
-                                error_messages={"unique": "Пользователь с таким именем уже существует"}, )
-
+    email = models.EmailField(
+        verbose_name="Адрес эл. почты", unique=True,
+        error_messages={"unique": "Пользователь с такой эл. почтой уже существует"},
+    )
+    username = models.CharField(
+        verbose_name="Имя пользователя", unique=True, max_length=50, validators=[username_validator],
+        error_messages={"unique": "Пользователь с таким именем уже существует"},
+    )
     first_name = models.CharField(verbose_name="Имя", max_length=150, blank=True)
     last_name = models.CharField(verbose_name="Фамилия", max_length=150, blank=True)
     is_staff = models.BooleanField(verbose_name="Сотрудник", default=False)
@@ -63,12 +65,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     """
     User's profile info model.
-
-    Creates with the User model.
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     photo = models.ImageField(verbose_name="Фото", upload_to="profile_pictures/", blank=True)
     vk = models.CharField(verbose_name="Профиль Вконтакте", max_length=100, blank=True)
     tg = models.CharField(verbose_name="Профиль Telegram", max_length=100, blank=True)
@@ -79,9 +78,6 @@ class Profile(models.Model):
         verbose_name = "Профиль"
         verbose_name_plural = "Профили"
         ordering = ("-user__date_joined",)
-
-    def __str__(self):
-        return str(self.user)
 
     def get_absolute_url(self):
         return reverse("profile", kwargs={"profile_id": self.id})

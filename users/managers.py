@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
 
     def get(self, *args, **kwargs):
         """
-        Returns profile fields along with user's
+        Returns profile fields along with user fields
         """
         return super().select_related('profile').get(*args, **kwargs)
 

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
     <div class="contact-form bg-dark mb-5">
@@ -7,13 +8,11 @@
 
             <p>{{ form.non_field_errors }}</p>
 
-            {% for f in form %}
-                <div class="form-group mb-3">
-                    <label for="{{ f.id_for_label }}" class="text-black-300">{{ f.label }}</label>
-                    {{ f }}
-                    <p>{{ f.errors }}</p>
-                </div>
-            {% endfor %}
+            <div class="form-group mb-3">
+                <label for="{{ form.content.id_for_label }}" class="text-black-300">Содержание</label>
+                {% render_field form.content class="form-control bg-transparent rounded-0 border-bottom shadow-none pb-15 px-0" placeholder="Содержание комментария" %}
+                <p>{{ form.content.errors }}</p>
+            </div>
 
             <button class="btn btn-sm btn-primary" type="submit">Комментировать</button>
         </form>
