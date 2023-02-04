@@ -15,3 +15,4 @@ class Follow(models.Model):
         unique_together = ("following", "follower",)
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+        ordering = ("time_created",)

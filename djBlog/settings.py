@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v**fei4akqk3_-itc1q00j#y_nq(lyn1da%z@rd9kp=fh@=tsi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", 1))
+# DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
 INTERNAL_IPS = ["127.0.0.1"]  # debug toolbar ips
 
@@ -92,8 +93,12 @@ WSGI_APPLICATION = 'djBlog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("POSTGRES_DB", 'djblog_db'),
+        'USER': os.environ.get("POSTGRES_USER", 'djblog_user'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'qwerty'),
+        'HOST': os.environ.get("POSTGRES_HOST", '127.0.0.1'),
+        'PORT': '5432',
     }
 }
 
@@ -148,3 +153,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_URL = "authentication"
+
+CSRF_TRUSTED_ORIGINS=["http://127.0.0.1"]
