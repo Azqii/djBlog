@@ -23,12 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v**fei4akqk3_-itc1q00j#y_nq(lyn1da%z@rd9kp=fh@=tsi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", 1))
-# DEBUG = False
+DEBUG = int(os.environ.get("DEBUG", True))
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
-INTERNAL_IPS = ["127.0.0.1"]  # debug toolbar ips
+INTERNAL_IPS = ["127.0.0.1", "localhost"]  # debug toolbar
 
 
 # Application definition

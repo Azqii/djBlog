@@ -10,6 +10,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY . .
+RUN python3 manage.py collectstatic
 
 COPY ./entrypoint.sh /
 ENTRYPOINT ["sh", "/entrypoint.sh"]
