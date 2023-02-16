@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 
 
 class AuthorAccessMixin:
+    """Миксин, проверяющий является ли пользователь автором комментария"""
     def get_object(self, *args, **kwargs):
         obj = super().get_object(*args, **kwargs)
         if obj.user_id != self.request.user.id:

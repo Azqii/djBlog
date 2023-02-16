@@ -8,6 +8,7 @@ from .utils import AuthorAccessMixin
 
 
 class AddPostView(LoginRequiredMixin, CreateView):
+    """View создания поста"""
     form_class = PostForm
     template_name = "posts/post_form.html"
     extra_context = {"title": "Новый пост"}
@@ -18,6 +19,7 @@ class AddPostView(LoginRequiredMixin, CreateView):
 
 
 class EditPostView(AuthorAccessMixin, UpdateView):
+    """View редактирования поста"""
     model = Post
     form_class = PostForm
     pk_url_kwarg = "post_id"
@@ -26,6 +28,7 @@ class EditPostView(AuthorAccessMixin, UpdateView):
 
 
 class DeletePostView(AuthorAccessMixin, DeleteView):
+    """View удаления поста"""
     model = Post
     pk_url_kwarg = "post_id"
     template_name = "posts/post_confirm_delete.html"

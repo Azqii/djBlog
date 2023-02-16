@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Follow(models.Model):
+    """Модель подписки одного пользователя на другого"""
     following = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Подписка на", related_name="followers"
     )

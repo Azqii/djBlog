@@ -4,6 +4,7 @@ from django.urls import reverse
 
 
 class Post(models.Model):
+    """Модель поста пользователя"""
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", related_name="posts"
     )

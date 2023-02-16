@@ -5,6 +5,7 @@ from posts.models import Post
 
 
 class Like(models.Model):
+    """Модель лайка под постом от пользователя"""
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name="Пост", related_name="likes")
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="likes"

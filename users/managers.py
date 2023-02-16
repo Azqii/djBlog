@@ -8,13 +8,13 @@ class UserManager(BaseUserManager):
 
     def get(self, *args, **kwargs):
         """
-        Returns profile fields along with user fields
+        Возвращает поля модели Profile вместе с User
         """
         return super().select_related('profile').get(*args, **kwargs)
 
     def _create_user(self, email, username, password, **extra_fields):
         """
-        Creates and saves a user with the given username, email and password.
+        Создает и сохраняет пользователя с переданными username, email и password.
         """
         if not email:
             raise ValueError("The given email must be set")
@@ -26,11 +26,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, username=None, password=None, **extra_fields):
+        """Создание обычного пользователя"""
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, username, password, **extra_fields)
 
     def create_superuser(self, email, username=None, password=None, **extra_fields):
+        """Создание суперпользователя"""
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -40,6 +42,3 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, username, password, **extra_fields)
-
-
-

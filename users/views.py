@@ -6,10 +6,12 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, FormView
 
 from .forms import UserRegisterForm, ProfileSettingsForm, UserLoginForm
-from .utils import AuthenticationMixin
+from .utils import AuthenticationErrorsMixin
+from .services import save_user_profile_info
 
 
 class UserAuthenticationView(TemplateView):
+    """View аутентификации пользователей"""
     template_name = "users/authentication.html"
     extra_context = {"title": "Аутентификация"}
 
@@ -19,26 +21,38 @@ class UserAuthenticationView(TemplateView):
         return super().get(request, *args, **kwargs)
 
 
-class UserRegisterView(AuthenticationMixin, CreateView):
+class UserRegisterView(AuthenticationErrorsMixin, CreateView):
+    """
+    View для регистрации нового пользователя.
+
+    Работает только с методом POST в запросе, форма передается через templatetags.
+    """
     form_class = UserRegisterForm
 
     def get_success_url(self):
         return reverse_lazy("authentication")
 
 
-class UserLoginView(AuthenticationMixin, LoginView):
+class UserLoginView(AuthenticationErrorsMixin, LoginView):
+    """
+    View для аутентификации пользователей.
+
+    Работает только с методом POST в запросе, форма передается через templatetags.
+    """
     form_class = UserLoginForm
 
     def get_success_url(self):
         return reverse_lazy("feed")
 
 
-def logout_user(request):
+def logout_user_view(request):
+    """View завершения сессии пользователем."""
     logout(request)
     return redirect("authentication")
 
 
 class ProfileSettingsView(LoginRequiredMixin, FormView):
+    """View настроек информации о пользователе."""
     template_name = "users/profile_settings.html"
     form_class = ProfileSettingsForm
     extra_context = {"title": "Настройки"}
@@ -56,16 +70,5 @@ class ProfileSettingsView(LoginRequiredMixin, FormView):
         return initial
 
     def form_valid(self, form):
-        form = form.cleaned_data
-        user = self.request.user
-
-        user.profile.photo = form["photo"]
-        user.first_name = form["first_name"]
-        user.last_name = form["last_name"]
-        user.profile.vk = form["vk"]
-        user.profile.tg = form["tg"]
-        user.profile.instagram = form["instagram"]
-        user.profile.bio = form["bio"]
-        user.save()
-
-        return redirect("profile", user.profile.id)
+        save_user_profile_info(user=self.request.user, info=form.cleaned_data)
+        return redirect("profile", self.request.user.profile.id)

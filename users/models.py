@@ -12,9 +12,9 @@ from .managers import UserManager
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
-    Auth User model.
+    Модель пользователя.
 
-    Username, email and passwords are required.
+    Поля username, email и password обязательны.
     """
 
     username_validator = UnicodeUsernameValidator()
@@ -48,23 +48,23 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         """
-        Return the first_name plus the last_name, with a space in between.
+        Возвращает имя и фамилию с пробелом между ними.
         """
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):
-        """Return the short name for the user."""
+        """Возвращает имя пользователя."""
         return self.first_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """Sends an email to this user."""
+        """Отправляет email пользователю."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
 class Profile(models.Model):
     """
-    User's profile info model.
+    Модель профиля пользователя с информацией.
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -85,6 +85,7 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_update_user(sender, instance, created, **kwargs):
+    """Сигнал для создания профиля нового пользователя"""
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
