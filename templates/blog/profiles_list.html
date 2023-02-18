@@ -1,7 +1,12 @@
 {% extends "base.html" %}{% load static %}
 
 {% block content %}
-    <h2 class="text-white add-letter-space mb-3">Пользователи:</h2>
+    <h2 class="text-white add-letter-space mb-3">
+        {% if profile %}
+            <a href="{% url 'profile' profile_id=profile.user.id %}" class="text-white"><i class="fas fa-backward"></i></a>
+        {% endif %}
+        Пользователи:
+    </h2>
 
     {% for profile in object_list %}
         <div class="bg-dark p-2 mb-4">
@@ -16,6 +21,10 @@
                             <a class="text-white opacity-50-onHover"
                                href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a>
                         </h2>
+
+                        {% if request.user.id != profile.id %}
+                            {% include "follows/includes/follow_button.html" %}
+                        {% endif %}
                     </div>
 
                     {% if profile.user.first_name and profile.user.last_name %}

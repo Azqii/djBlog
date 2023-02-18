@@ -1,17 +1,21 @@
 {% if not post.already_liked %}
-    <form method="post" action="{% url 'like' %}">
+    <form method="post" action="{% url 'like' %}" class="like-unlike-form like-form">
         {% csrf_token %}
         <input type="hidden" name="post_id" value="{{ post.id }}" readonly>
-        <button type="submit" class="btn btn-outline-danger">
-            <i class="fa fa-thumbs-up like-button"> {{ post.likes_count }}</i>
-        </button>
+        <div class="button-wrap">
+            <button type="submit" class="btn btn-outline-danger">
+                <i class="fa fa-thumbs-up like-button"> {{ post.likes_count }}</i>
+            </button>
+        </div>
     </form>
 {% else %}
-    <form method="post" action="{% url 'unlike' %}">
+    <form method="post" action="{% url 'unlike' %}" class="like-unlike-form unlike-form">
         {% csrf_token %}
         <input type="hidden" name="post_id" value="{{ post.id }}" readonly>
-        <button type="submit" class="btn btn-outline-danger active">
-            <i class="fa fa-thumbs-up like-button"> {{ post.likes_count }}</i>
-        </button>
+        <div class="button-wrap">
+            <button type="submit" class="btn btn-outline-danger active">
+                <i class="fa fa-thumbs-up like-button"> {{ post.likes_count }}</i>
+            </button>
+        </div>
     </form>
 {% endif %}

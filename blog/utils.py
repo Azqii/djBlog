@@ -10,6 +10,5 @@ class BaseProfileFollowsView(SingleObjectMixin, ListView):
     paginate_by = 8
 
     def get(self, request, *args, **kwargs):
-        # self.object = self.get_object(queryset=Profile.objects.select_related("user"))
         self.object = self.get_object(queryset=BlogRepository.get_profile_with_user())
         return super().get(request, *args, **kwargs)

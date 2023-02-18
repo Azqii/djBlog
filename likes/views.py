@@ -1,27 +1,25 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import IntegrityError
-from django.shortcuts import redirect
+from django.http import JsonResponse
 from django.views import View
 
-from .repository import LikesRepository
+from .services import get_like_response, get_unlike_response
 
 
 class LikeView(LoginRequiredMixin, View):
-    """View добавления лайка"""
-    def post(self, request, *args, **kwargs):
-        post_id = request.POST.get("post_id")
+    """View добавления лайка AJAX-запросом"""
 
-        try:
-            LikesRepository.like_post(user=self.request.user, post_id=post_id)
-        except IntegrityError:
-            pass
-        return redirect("post", post_id)  # TODO: переписать с AJAX
+    def post(self, request, *args, **kwargs):
+        post_id = int(request.POST.get("post_id"))
+
+        response = get_like_response(user=self.request.user, post_id=post_id)
+        return JsonResponse(response)
 
 
 class UnlikeView(LoginRequiredMixin, View):
-    """View удаления лайка"""
-    def post(self, request, *args, **kwargs):
-        post_id = request.POST.get("post_id")
+    """View удаления лайка AJAX-запросом"""
 
-        LikesRepository.unlike_post(user=self.request.user, post_id=post_id)
-        return redirect("post", post_id)  # TODO: переписать с AJAX
+    def post(self, request, *args, **kwargs):
+        post_id = int(request.POST.get("post_id"))
+
+        response = get_unlike_response(user=self.request.user, post_id=post_id)
+        return JsonResponse(response)

@@ -1,33 +1,25 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import IntegrityError
-from django.shortcuts import redirect
+from django.http import JsonResponse
 from django.views import View
 
-from .repository import FollowsRepository
+from .services import get_follow_response, get_unfollow_response
 
 
 class FollowView(LoginRequiredMixin, View):
-    """View подписки"""
+    """View подписки с AJAX-запросом"""
+
     def post(self, request, *args, **kwargs):
-        id_to_follow = request.POST.get("id_to_follow")
+        id_to_follow = int(request.POST.get("target"))
 
-        if self.request.user.id == int(id_to_follow):
-            return redirect("profile", self.request.user.id)
-
-        try:
-            FollowsRepository.follow(follow_to_id=id_to_follow, user=self.request.user)
-        except IntegrityError:
-            pass
-        return redirect("profile", id_to_follow)  # TODO: переписать с AJAX
+        response = get_follow_response(user=self.request.user, follow_id=id_to_follow)
+        return JsonResponse(response)
 
 
 class UnfollowView(LoginRequiredMixin, View):
-    """View отписки"""
+    """View отписки с AJAX-запросом"""
+
     def post(self, request, *args, **kwargs):
-        id_to_unfollow = request.POST.get("id_to_unfollow")
+        id_to_unfollow = int(request.POST.get("target"))
 
-        if self.request.user.id == int(id_to_unfollow):
-            return redirect("profile", self.request.user.id)
-
-        FollowsRepository.unfollow(unfollow_id=id_to_unfollow, user=self.request.user)
-        return redirect("profile", id_to_unfollow)  # TODO: переписать с AJAX
+        response = get_unfollow_response(user=self.request.user, unfollow_id=id_to_unfollow)
+        return JsonResponse(response)

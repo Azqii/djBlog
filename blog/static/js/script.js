@@ -1,10 +1,3 @@
-/**
- * WEBSITE: https://themefisher.com
- * TWITTER: https://twitter.com/themefisher
- * FACEBOOK: https://www.facebook.com/themefisher
- * GITHUB: https://github.com/themefisher/
- */
-
 (function ($) {
   "use strict";
 
@@ -58,7 +51,7 @@
 })(jQuery);
 
 
-function openWidget(evt, cityName) {
+function openWidget(evt, tabName) {
     // Declare all variables
     let i, tabcontent, tablinks;
 
@@ -75,23 +68,9 @@ function openWidget(evt, cityName) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
-
-
-// comment form
-function openForm(){
-  let form = document.getElementById('comment-form');
-
-  if (form.style.display === 'none') {
-    // 👇️ this SHOWS the form
-    form.style.display = 'block';
-  } else {
-    // 👇️ this HIDES the form
-    form.style.display = 'none';
-  }
-}

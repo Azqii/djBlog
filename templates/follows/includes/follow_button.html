@@ -1,13 +1,17 @@
 {% if profile.already_following %}
-    <form method="post" action="{% url 'unfollow' %}">
+    <form method="post" action="{% url 'unfollow' %}" class="follow-unfollow-form unfollow-form">
         {% csrf_token %}
-        <input type="hidden" name="id_to_unfollow" value="{{ profile.user.id }}" readonly>
-        <button type="submit" class="btn-sm btn-outline-danger active">Отписаться</button>
+        <input type="hidden" name="target" value="{{ profile.user.id }}" readonly>
+        <div class="follow-btn-wrap">
+            <button type="submit" class="btn-sm btn-outline-danger active">Отписаться</button>
+        </div>
     </form>
 {% else %}
-    <form method="post" action="{% url 'follow' %}">
+    <form method="post" action="{% url 'follow' %}" class="follow-unfollow-form follow-form">
         {% csrf_token %}
-        <input type="hidden" name="id_to_follow" value="{{ profile.user.id }}" readonly>
-        <button type="submit" class="btn-sm btn-outline-danger text-gray">Подписаться</button>
+        <input type="hidden" name="target" value="{{ profile.user.id }}" readonly>
+        <div class="follow-btn-wrap">
+            <button type="submit" class="btn-sm btn-outline-danger text-gray">Подписаться</button>
+        </div>
     </form>
 {% endif %}

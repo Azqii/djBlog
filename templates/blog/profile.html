@@ -55,11 +55,11 @@
         <div class="d-flex justify-content-end container-fluid">
             <p><b>
                 <a href="{% url 'follows' profile_id=profile.id %}"
-                   class="text-white opacity-50-onHover mr-3">Подписки: {{ profile.user.follows.count }}</a>
+                   class="text-white opacity-50-onHover mr-3">Подписки</a>
             </b></p>
             <p><b>
                 <a href="{% url 'followers' profile_id=profile.id %}"
-                   class="text-white opacity-50-onHover">Подписчики: {{ profile.user.followers.count }}</a>
+                   class="text-white opacity-50-onHover">Подписчики</a>
             </b></p>
         </div>
     </div>

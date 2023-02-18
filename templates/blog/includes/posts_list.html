@@ -47,9 +47,12 @@
 
             <p class="card-text my-4">{{ post.content }}</p>
 
-            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Перейти к посту<img
-                    src="{% static 'img/arrow-right.png' %}" alt=""></a>
+            <div class="d-flex container-fluid justify-content-between mb-4 p-0">
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Комментарии<img
+                        src="{% static 'img/arrow-right.png' %}" alt=""></a>
 
+                {% include 'likes/includes/like_button.html' %}
+            </div>
 
         </div>
     </div>
