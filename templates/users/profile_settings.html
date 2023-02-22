@@ -5,6 +5,18 @@
     <div class="contact-form bg-dark mb-5">
         <h1 class="text-white add-letter-space mb-5">Настройки профиля</h1>
 
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-sm btn-outline-danger active mb-5"
+                    onclick="window.location.href='{% url "settings" %}';">
+                Настройки профиля
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger mb-5"
+                    onclick="window.location.href='{% url "password_change" %}';">
+                Смена пароля
+            </button>
+        </div>
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -54,5 +66,6 @@
 
             <button class="btn btn-sm btn-primary" type="submit">Сохранить</button>
         </form>
+
     </div>
 {% endblock %}

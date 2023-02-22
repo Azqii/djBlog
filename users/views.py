@@ -1,13 +1,13 @@
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import CreateView, TemplateView, FormView
 
 from .forms import UserRegisterForm, ProfileSettingsForm, UserLoginForm
-from .utils import AuthenticationErrorsMixin
-from .services import save_user_profile_info
+from .utils import AuthenticationFormsMixin
+from .services import save_user_profile_info, get_user_info
 
 
 class UserAuthenticationView(TemplateView):
@@ -21,7 +21,7 @@ class UserAuthenticationView(TemplateView):
         return super().get(request, *args, **kwargs)
 
 
-class UserRegisterView(AuthenticationErrorsMixin, CreateView):
+class UserRegisterView(AuthenticationFormsMixin, CreateView):
     """
     View для регистрации нового пользователя.
 
@@ -30,10 +30,10 @@ class UserRegisterView(AuthenticationErrorsMixin, CreateView):
     form_class = UserRegisterForm
 
     def get_success_url(self):
-        return reverse_lazy("authentication")
+        return reverse("authentication")
 
 
-class UserLoginView(AuthenticationErrorsMixin, LoginView):
+class UserLoginView(AuthenticationFormsMixin, LoginView):
     """
     View для аутентификации пользователей.
 
@@ -42,7 +42,10 @@ class UserLoginView(AuthenticationErrorsMixin, LoginView):
     form_class = UserLoginForm
 
     def get_success_url(self):
-        return reverse_lazy("feed")
+        return reverse("feed")
+
+class ChangePasswordView(PasswordChangeView):
+    pass
 
 
 def logout_user_view(request):
@@ -59,14 +62,7 @@ class ProfileSettingsView(LoginRequiredMixin, FormView):
 
     def get_initial(self):
         initial = super().get_initial()
-        user = self.request.user
-
-        initial.update({
-            "first_name": user.first_name, "last_name": user.last_name,
-            "vk": user.profile.vk, "tg": user.profile.tg,
-            "instagram": user.profile.instagram, "bio": user.profile.bio,
-            "photo": user.profile.photo
-        })
+        initial.update(get_user_info(self.request.user))
         return initial
 
     def form_valid(self, form):

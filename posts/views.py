@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from .forms import PostForm
@@ -35,4 +35,4 @@ class DeletePostView(AuthorAccessMixin, DeleteView):
     extra_context = {"title": "Удалить пост"}
 
     def get_success_url(self):
-        return reverse_lazy("profile", kwargs={"profile_id": self.request.user.profile.id})
+        return reverse("profile", kwargs={"profile_id": self.request.user.profile.id})

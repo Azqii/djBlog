@@ -142,10 +142,26 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Emails settings
+
+if int(os.environ.get("SEND_EMAILS", False)):
+    EMAIL_HOST = os.environ.get("EMAIL_HOST")
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
+    EMAIL_USE_TLS = int(os.environ.get("EMAIL_USE_TLS"))
+    EMAIL_USE_SSL = int(os.environ.get("EMAIL_USE_SSL"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Other
 
