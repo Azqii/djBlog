@@ -1,6 +1,6 @@
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView, FormView
@@ -43,9 +43,6 @@ class UserLoginView(AuthenticationFormsMixin, LoginView):
 
     def get_success_url(self):
         return reverse("feed")
-
-class ChangePasswordView(PasswordChangeView):
-    pass
 
 
 def logout_user_view(request):

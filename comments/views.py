@@ -7,6 +7,7 @@ from .utils import AuthorAccessMixin, SuccessUrlMixin
 
 
 class AddCommentView(LoginRequiredMixin, SuccessUrlMixin, CreateView):
+    """View добавления комментария"""
     form_class = CommentForm
     template_name = "comments/comment_form.html"
 
@@ -17,6 +18,7 @@ class AddCommentView(LoginRequiredMixin, SuccessUrlMixin, CreateView):
 
 
 class EditCommentView(AuthorAccessMixin, SuccessUrlMixin, UpdateView):
+    """View редактирования комментария"""
     model = Comment
     form_class = CommentForm
     pk_url_kwarg = "comment_id"
@@ -25,6 +27,7 @@ class EditCommentView(AuthorAccessMixin, SuccessUrlMixin, UpdateView):
 
 
 class DeleteCommentView(AuthorAccessMixin, SuccessUrlMixin, DeleteView):
+    """View удаления комментария"""
     model = Comment
     pk_url_kwarg = "comment_id"
     template_name = "comments/comment_confirm_delete.html"

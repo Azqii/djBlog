@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
 INTERNAL_IPS = ["127.0.0.1", "localhost"]  # debug toolbar
 
+CSRF_TRUSTED_ORIGINS=["http://127.0.0.1"]
+
 
 # Application definition
 
@@ -97,7 +99,7 @@ DATABASES = {
         'USER': os.environ.get("POSTGRES_USER", 'djblog_user'),
         'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'qwerty'),
         'HOST': os.environ.get("POSTGRES_HOST", '127.0.0.1'),
-        'PORT': '5432',
+        'PORT': os.environ.get("POSTGRES_PORT", '5432'),
     }
 }
 
@@ -162,11 +164,14 @@ if int(os.environ.get("SEND_EMAILS", False)):
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Celery settings
+
+RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", "localhost")
+RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT", "5672")
+CELERY_BROKER_URL = "amqp://" + RABBITMQ_HOST + ":" + RABBITMQ_PORT
 
 # Other
 
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_URL = "authentication"
-
-CSRF_TRUSTED_ORIGINS=["http://127.0.0.1"]
