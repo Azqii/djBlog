@@ -12,4 +12,3 @@
 - PostgreSQL
 - nginx + gunicorn
 - celery + rabbitmq
-- 
